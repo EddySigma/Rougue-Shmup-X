@@ -8,7 +8,6 @@ class Controller:
 
         self.running = True        
         self.keys_pressed = pygame.key.get_pressed()
-        self.user_events()
 
     def user_events(self):
         for event in pygame.event.get():
@@ -56,6 +55,8 @@ class Controller:
     def get_player_ship(self):
         return self.model.player.IMAGE
 
+    def is_running(self):
+        return self.running
     """
     Future functions here:
     Collision?

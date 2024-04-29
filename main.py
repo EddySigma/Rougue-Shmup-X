@@ -40,8 +40,11 @@ def main():
         FPS = 60
         clock.tick(FPS)
 
-        running = Controller(model, view)
-        
+        con = Controller(model, view)
+        con.user_events()
+        con.handle_user_input()
+        running = con.is_running()
+
         pygame.display.flip()  # this is the refresh of the screen/window
 
     pygame.quit()
