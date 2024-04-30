@@ -1,64 +1,66 @@
 import pygame
 
 
+class Thing:
+    def __init__(self, image, x, y):
+        self.image = image
+        self.x_pos = x
+        self.y_pos = y
+
 class Controller:
     def __init__(self, model, view):
         self.model = model
         self.view = view
 
-        self.running = True        
-        self.keys_pressed = pygame.key.get_pressed()
+        self.running = True
+        
+    
+    def run(self):
+        keys_pressed = pygame.key.get_pressed()
+        self.handle_user_events()
+        self.handle_user_input(keys_pressed)
+        self.display_to_screen()
+        return self.running
 
-    def user_events(self):
+    def handle_user_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
-            elif event.type == pygame.KEYDOWN:  # this is for single press events
-                if event.key == pygame.K_ESCAPE:
-                    x = 1  # pause game here
-                    # expected behavior:
-                    # display buttons for restart, quit and maybe something else?
 
-    # The 0.25 is the amount of the sprite that sticks out of the playable area
-    # The 0.75 has the same purpose for the opposite sides
-    # TODO: rename this value to something understandable and make it a constant
+    # 0.25 and 0.75 are used to allow the player to exede the play area slightly
+    # My thinking is that this will help the player dodge things by having a
+    # a little more space to work with.
 
-    def handle_user_input(self):
-        if (
-            self.keys_pressed[pygame.K_w]
-            and self.model.player.y_pos >= (0 - self.model.player.height) * 0.25
-        ):
+    def handle_user_input(self, keys_pressed):
+        if (keys_pressed[pygame.K_w]
+            and self.model.player.y_pos >= (0 - self.model.player.height) * 0.25):
             self.model.player.move_forward()
-        if self.keys_pressed[
-            pygame.K_s
-        ] and self.model.player.y_pos <= self.view.PLAY_AREA_HEIGHT - (
-            self.model.player.height * 0.75
-        ):
+
+        if (keys_pressed[pygame.K_s]
+            and self.model.player.y_pos <= self.view.PLAY_AREA_HEIGHT - (self.model.player.height * 0.75)):
             self.model.player.move_back()
-        if (
-            self.keys_pressed[pygame.K_a]
-            and self.model.player.x_pos >= (0 - self.model.player.width) * 0.25
-        ):
+
+        if (keys_pressed[pygame.K_a]
+            and self.model.player.x_pos >= (0 - self.model.player.width) * 0.25):
             self.model.player.move_left()
-        if self.keys_pressed[
-            pygame.K_d
-        ] and self.model.player.x_pos <= self.view.PLAY_AREA_WIDTH - (
-            self.model.player.width * 0.75
-        ):
+
+        if (keys_pressed[pygame.K_d] 
+            and self.model.player.x_pos <= self.view.PLAY_AREA_WIDTH - (
+            self.model.player.width * 0.75)):
             self.model.player.move_right()
+        
 
-        if self.keys_pressed[pygame.K_SPACE]:
-            x = 1  # shoot
-        if self.keys_pressed[pygame.K_LSHIFT]:
-            x = 1  # rocket/shield/bomb?
+    def display_to_screen(self):
+        paiload = []
+        paiload.append(Thing(self.model.player.ship, self.model.player.x_pos, self.model.player.y_pos))
+        
+        for item in self.model.player_attacks:
+            paiload.append(Thing(item.image, item.x_pos, item.y_pos))
 
-    def get_player_ship(self):
-        return self.model.player.IMAGE
+        for item in self.model.enemies:
+            paiload.append(Thing(item.image, item.x_pos, item.y_pos))
+        
+        for item in self.model.enemy_attacks:
+            plaiload.append(Thing(item.sprite, item.x_pos, item.y_pos))
 
-    def is_running(self):
-        return self.running
-    """
-    Future functions here:
-    Collision?
-    Enemy tick rate and damage?
-    """
+        self.view.add_to_display_queue(paiload)

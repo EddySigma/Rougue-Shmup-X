@@ -1,26 +1,5 @@
 #!/usr/bin/venv python
 
-""" Testing ground for game development. """
-
-# TODO: Change color of things when changing behavior
-# red: rush, low health, fast
-# black/gray: tank
-# blue: mirror match
-# green bombs
-# yellow: lasers
-# purple: shield, wave attack
-
-# TODO: new sprites
-# health pick up
-# health upgrade
-# shot upgrade
-# bomb
-# bomb upgrade
-# shield
-# shield upgrade
-# upgrade container
-# shrink upgrade
-
 import pygame
 import os
 from ships import Hero
@@ -33,6 +12,8 @@ def main():
 
     model = Model()
     view = View()
+    con = Controller(model, view)
+
     clock = pygame.time.Clock()
 
     running = True
@@ -40,10 +21,8 @@ def main():
         FPS = 60
         clock.tick(FPS)
 
-        con = Controller(model, view)
-        con.user_events()
-        con.handle_user_input()
-        running = con.is_running()
+        running = con.run()
+        view.display_elements()
 
         pygame.display.flip()  # this is the refresh of the screen/window
 
