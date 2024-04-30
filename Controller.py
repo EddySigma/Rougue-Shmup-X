@@ -1,11 +1,11 @@
 import pygame
+from dataclasses import dataclass
 
-
+@dataclass
 class Thing:
-    def __init__(self, image, x, y):
-        self.image = image
-        self.x_pos = x
-        self.y_pos = y
+    image: pygame.surface.Surface
+    x_pos: int
+    y_pos: int
 
 class Controller:
     def __init__(self, model, view):

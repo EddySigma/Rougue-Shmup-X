@@ -18,6 +18,7 @@ class Hero:
 
     def generate_ship(self):
         self.IMAGE = pygame.image.load(os.path.join("assets", self.asset_name))
+        print(type(self.IMAGE))
         return pygame.transform.scale(self.IMAGE, (self.width, self.height))
 
     def change_ship_size(self, new_width, new_height):
