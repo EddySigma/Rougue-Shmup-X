@@ -15,13 +15,13 @@ class Hero:
         self.speed = 2  # as far as I know this is tied to frame rate... is there a way to fix that?
         self.asset_name = asset_name
         self.ship = self.generate_ship()
-
+        
     def generate_ship(self):
-        self.SHIP_IMAGE = pygame.image.load(os.path.join("assets", self.asset_name))
-        return pygame.transform.scale(self.SHIP_IMAGE, (self.width, self.height))
+        self.IMAGE = pygame.image.load(os.path.join("assets", self.asset_name))
+        return pygame.transform.scale(self.IMAGE, (self.width, self.height))
 
     def change_ship_size(self, new_width, new_height):
-        self.ship = pygame.transform.scale(self.SHIP_IMAGE, (self.width, self.height))
+        self.ship = pygame.transform.scale(self.IMAGE, (self.width, self.height))
 
     # TODO: add behavior to change the color or some sprites depending on certain events
     #def change_color_filter(new_values):

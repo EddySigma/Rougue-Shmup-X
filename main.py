@@ -27,16 +27,16 @@ from ships import Hero
 
 
 class Controller:
-    def __init__(self, data_model, obj_view):
+    def __init__(self, model, view):
         self.running = True
         self.keys_pressed = pygame.key.get_pressed()
-        self.model = data_model
-        self.view = obj_view
+        self.model = model
+        self.view = view
 
     def user_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
+                self.running = False
             elif event.type == pygame.KEYDOWN:  # this is for single press events
                 if event.key == pygame.K_ESCAPE:
                     x = 1  # pause game here
@@ -65,6 +65,9 @@ class Controller:
 
     def isRunning(self):
         return self.running
+    
+    def getPlayerShip(self):
+        return self.model.player.IMAGE
 
 class View:
     def __init__(self):
@@ -77,6 +80,8 @@ class View:
         self.window = pygame.display.set_mode((self.WIDTH, self.HEIGHT))  # notice the double parenthesis
 
 
+        self.display_queue = []
+
         self.PLAY_AREA_WIDTH = 600
         self.PLAY_AREA_HEIGHT = 800
         self.BORDER_ASSET = pygame.image.load(os.path.join("assets", "border 600x800.png"))
@@ -88,7 +93,7 @@ class View:
         # render your game here
         #self.window.blit(player.ship, (player.x_pos, player.y_pos))
 
-        #self.display_player_ship()
+        self.display_player_ship()
         #self.display_enemies()
         #self.display_attacks()
 
@@ -99,23 +104,31 @@ class View:
         self.window.blit(self.BORDER, (0,0))
         # flip() the display to put your work on screen
 
-    def display_enemies(self, mob):
-        for enemy in mob:
-            self.window.blit(enemy.ship, (enemy.x_pos, enemy.y_pos))
-    
-    def display_attacks(self, container):
-        for item in container:
-            self.window.blit(item.sprite, (item.x_pos, item.y_pos))
+    def display_everything(self):
+        for item in self.display_queue:
+            # image = item[0]
+            # x_pos = item[1]
+            # y_pos = item[2]
+            self.window.blit(item[0], (item[1], item[2]))
 
-    def display_player_ship(self, player_sprite, player_x_pos, player_y_pos):
-        self.window.blit(player_sprite, (player_x_pos, player_y_pos))
+    def add_to_display_queue(self, payload):
+        self.display_queue.extend(payload)
+
     
 
 class Model:
     def __init__(self):
-        player = Hero(100, "hero 2.png", 64, 64)
+        self.player = Hero(100, "hero 2.png", 64, 64)
 
 
+    """
+    def generate_ship(self, entity):
+        self.SHIP_IMAGE = pygame.image.load(os.path.join("assets", self.asset_name))
+        return pygame.transform.scale(self.SHIP_IMAGE, (self.width, self.height))
+
+    def change_ship_size(self, entity):
+        return pygame.transform.scale(self.entity.IMAGE, (entity.width, entity.height))
+    """
 
 def main():
     pygame.init()
@@ -123,7 +136,7 @@ def main():
     mod = Model()
     vie = View()
     clock = pygame.time.Clock()
-    
+
     running = True
     while running:
         FPS = 60
