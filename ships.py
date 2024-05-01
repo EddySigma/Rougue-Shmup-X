@@ -2,6 +2,7 @@
 
 import pygame
 import os
+import abc
 
 
 class Hero:
@@ -41,10 +42,70 @@ class Hero:
     def move_back(self):
         self.y_pos += self.movement_speed
 
-    # TODO: Determine the behavior of reaching 0 hp
-    def take_damage(self, amount):
-        self.health -= amount
-        if self.health <= 0:
-            x = 1  # destroy ship and take a life? or end game?
 
-    # TODO: shield/rocket/bomb? and behavior
+# ========================================================================
+
+"""
+All enemies have health, position (x, y), size (height, width), an asset
+"""
+class Enemy(metaclass=abc.ABCMeta):
+    @abc.abstractmethod
+    def shoot(self):
+        pass
+
+    @abc.abstractmethod
+    def special_attack(self):
+        pass
+
+
+class Scout(Enemy):
+    def __inti__(self, health, x, y, height, width, asset, movement):
+        self.health = health
+        self.x_pos = x
+        self.y_pos = y
+        self.height = height
+        self.width = width
+        self.asset = asset
+        self.movement_speed = movement
+        self.shot_speed = 1
+        self.shot_delay = 1
+
+
+    def move_right(self):
+        self.x_pos += self.movement_speed
+
+    def move_left(self):
+        self.x_pos -= self.movement_speed
+
+    def move_forward(self):
+        self.y_pos -= self.movement_speed
+
+    def move_back(self):
+        self.y_pos += self.movement_speed
+
+    
+    def rotate_clockwise(self):
+        x=1
+    
+    def rotate_counterclockwise(self):
+        x=2
+
+    def rush_behavior(self, hero_x, hero_y):
+        if (hero_x > self.x_pos):
+            self.move_right
+        
+        if (hero_x < self.x_pos):
+            self.move_left
+
+        if (hero_y > self.y_pos):
+            self.move_back
+
+        if (hero_y < self.y_pos):
+            self.move_forward
+
+
+    def shoot(self):
+        pass
+
+    def special_attack(self):
+        pass

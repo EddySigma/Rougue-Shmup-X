@@ -1,12 +1,6 @@
 import pygame
 import os
-from dataclasses import dataclass
-
-@dataclass
-class Thing:
-    image: pygame.surface.Surface
-    x_pos: int
-    y_pos: int
+from Controller import Sprite
 
 
 class View:
