@@ -1,5 +1,4 @@
 from ships import Hero
-from ships import Enemy
 
 class Model:
     def __init__(self):
@@ -10,9 +9,6 @@ class Model:
 
     def make_an_enemy(self, type):
         x=1
-
-    def add_scout(self):
-        self.enemies.append(Scout(100, 300, 50, 32, 32, "scout 64.png", 3))
 
     """
     Here: Should I have a means to generate new enemies and bullets? (fabric(s?))

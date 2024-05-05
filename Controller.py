@@ -17,11 +17,20 @@ class Controller:
 
     def run(self):
         keys_pressed = pygame.key.get_pressed()
+        self.create_enemies()
+        self.enemy_actions(self.model.player.x_pos, self.model.player.y_pos)
+        
         self.handle_user_events()
         self.handle_user_input(keys_pressed)
-        self.enemy_action(self.model.player.x_pos, self.model.player.y_pos)
         self.send_items_to_display()
         return self.running
+    
+    def create_enemies(self):
+        x=1
+    
+
+    def enemy_actions(self, player_x, player_y):
+        x=1
 
     def handle_user_events(self):
         for event in pygame.event.get():
@@ -50,9 +59,6 @@ class Controller:
         ):
             self.model.player.move_right()
 
-
-    def enemy_action(self):
-        x=1
 
     def send_items_to_display(self):
         display_paiload = []
