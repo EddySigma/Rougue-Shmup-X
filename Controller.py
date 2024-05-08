@@ -16,21 +16,17 @@ class Controller:
         self.running = True
 
     def run(self):
+        # generate enemies here
+
         keys_pressed = pygame.key.get_pressed()
-        self.create_enemies()
-        self.enemy_actions(self.model.player.x_pos, self.model.player.y_pos)
         
         self.handle_user_events()
         self.handle_user_input(keys_pressed)
+        self.enemy_activity(self.model.player.x_pos, self.model.player.y_pos)
+
         self.send_items_to_display()
         return self.running
-    
-    def create_enemies(self):
-        x=1
-    
 
-    def enemy_actions(self, player_x, player_y):
-        x=1
 
     def handle_user_events(self):
         for event in pygame.event.get():
@@ -60,6 +56,11 @@ class Controller:
             self.model.player.move_right()
 
 
+    def enemy_activity(self, player_x_pos, player_y_pos):
+        for enemy in self.model.enemies:
+            enemy.behavior(player_x_pos, player_y_pos)
+
+
     def send_items_to_display(self):
         display_paiload = []
         display_paiload.append(
@@ -74,6 +75,6 @@ class Controller:
             self.model.enemy_attacks,
         ):
             for item in asset:
-                display_paiload.append(Sprite(item.image, item.x_pos, item.y_pos))
+                display_paiload.append(Sprite(item.ship, item.x_pos, item.y_pos))
 
         self.view.add_to_display_queue(display_paiload)
