@@ -22,6 +22,7 @@ class Controller:
         
         self.handle_user_events()
         self.handle_user_input(keys_pressed)
+        self.handle_bullets()
         self.enemy_activity(self.model.player.x_pos, self.model.player.y_pos)
 
         self.send_items_to_display()
@@ -55,6 +56,13 @@ class Controller:
         ):
             self.model.player.move_right()
 
+        if(keys_pressed[pygame.K_SPACE]):
+            self.model.player_attacks.append(self.model.player.shot())
+
+    def handle_bullets(self):
+        for bullet in self.model.player_attacks:
+            bullet.move_straight()
+
 
     def enemy_activity(self, player_x_pos, player_y_pos):
         for enemy in self.model.enemies:
@@ -63,18 +71,19 @@ class Controller:
 
     def send_items_to_display(self):
         display_paiload = []
-        display_paiload.append(
-            Sprite(
-                self.model.player.ship, self.model.player.x_pos, self.model.player.y_pos
-            )
-        )
-
         for asset in (
             self.model.player_attacks,
             self.model.enemies,
             self.model.enemy_attacks,
         ):
             for item in asset:
-                display_paiload.append(Sprite(item.ship, item.x_pos, item.y_pos))
+                display_paiload.append(Sprite(item.sprite, item.x_pos, item.y_pos))
+
+        
+        display_paiload.append(
+            Sprite(
+                self.model.player.sprite, self.model.player.x_pos, self.model.player.y_pos
+            )
+        )
 
         self.view.add_to_display_queue(display_paiload)
