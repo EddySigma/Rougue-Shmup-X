@@ -12,6 +12,8 @@ class Hero:
         self.height = height
         self.width = width
         self.health = health
+        self.fire_rate = 300
+        self.previous_time = pygame.time.get_ticks()
         self.movement_speed = 2  # as far as I know this is tied to frame rate... is there a way to fix that?
         self.asset_name = asset_name
         self.sprite = self.generate_ship()
@@ -42,9 +44,12 @@ class Hero:
 
     
     def shot(self):
-        return Bullet("shot 1-10.png", width=3, height=30, x_pos=self.x_pos + self.width//2 -1, y_pos=self.y_pos)
-
-
+        shot = Bullet("shot 1-10.png")
+        time_now = pygame.time.get_ticks() # there is got to be a better way...
+        if (time_now - self.previous_time > self.fire_rate):
+            self.previous_time = time_now
+            shot = Bullet("shot 1-10.png", width=3, height=30, x_pos=self.x_pos + self.width//2 -1, y_pos=self.y_pos)
+        return shot
 # ========================================================================
 
 """
@@ -92,7 +97,7 @@ class Enemy:
         time_now = pygame.time.get_ticks()
         if (time_now - self.previous_time > self.shot_delay * 1000):
             self.previous_time = time_now
-            self.shoot()
+            return self.shoot()
 
     """ Goal of this behavior:
      The enemy will have the same reaction time to a human or around that level of reaction.
@@ -102,7 +107,7 @@ class Enemy:
     """
 
     def shoot(self):
-        print("Bang!")
+        return Bullet("enemy shot 1-10.png", width=2, height=20, x_pos=self.x_pos + self.width//2, y_pos=self.y_pos, vel=4, dire=-90)
 
 
 """

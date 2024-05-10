@@ -1,5 +1,6 @@
 import pygame
 from dataclasses import dataclass
+from ships import Bullet
 
 
 @dataclass
@@ -62,19 +63,22 @@ class Controller:
     def handle_bullets(self):
         for bullet in self.model.player_attacks:
             bullet.move_straight()
+        for bullet in self.model.enemy_attacks:
+            bullet.move_straight()
 
 
     def enemy_activity(self, player_x_pos, player_y_pos):
         for enemy in self.model.enemies:
-            enemy.behavior(player_x_pos, player_y_pos)
-
+            bullet = enemy.behavior(player_x_pos, player_y_pos)
+            if (isinstance(bullet, Bullet)):
+                self.model.enemy_attacks.append(bullet)
 
     def send_items_to_display(self):
         display_paiload = []
         for asset in (
             self.model.player_attacks,
-            self.model.enemies,
             self.model.enemy_attacks,
+            self.model.enemies,
         ):
             for item in asset:
                 display_paiload.append(Sprite(item.sprite, item.x_pos, item.y_pos))
