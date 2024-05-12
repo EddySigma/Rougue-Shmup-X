@@ -126,17 +126,22 @@ class Bullet():
         self.velocity = vel
         self.direction = dire
         self.sprite = self.generate_bullet()
+        self.collision_box = self.generate_collision_box()
 
     def generate_bullet(self):
         self.IMAGE = pygame.image.load(os.path.join("assets", self.asset_name))
         return pygame.transform.scale(self.IMAGE, (self.width, self.height))
+    
+    def generate_collision_box(self):
+        return pygame.Rect(self.x_pos + self.width//2 - 1, self.y_pos + self.height, self.width, self.height) # check width and height order
 
     def move_straight(self):
         if(self.direction == -90):
             self.y_pos += self.velocity
+            """
         if(self.direction == 90):
             self.y_pos -= self.velocity
-    
+    """
     def move_with_angle(self):
         x=1
 
