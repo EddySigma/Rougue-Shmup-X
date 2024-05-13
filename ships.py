@@ -2,21 +2,23 @@
 
 import pygame
 import os
+import dataclasses
 
-
+@dataclasses.dataclass
 class Hero:
-    def __init__(self, health, asset_name, height, width):
-        # Initial values here
-        self.x_pos = (width / 2) + (600 / 2)  # center of the screen
+    # Initial values here
+    height : int
+    width : int
+    health : int
+    asset_name : str
+
+    def __post_init__(self):
+        self.x_pos = 600 // 2
         self.y_pos = 400
-        self.height = height
-        self.width = width
-        self.health = health
         self.fire_rate = 300
-        self.previous_time = pygame.time.get_ticks()
         self.movement_speed = 2  # as far as I know this is tied to frame rate... is there a way to fix that?
-        self.asset_name = asset_name
         self.sprite = self.generate_ship()
+        self.previous_time = pygame.time.get_ticks()
 
     def generate_ship(self):
         self.IMAGE = pygame.image.load(os.path.join("assets", self.asset_name))
@@ -107,7 +109,7 @@ class Enemy:
     """
 
     def shoot(self):
-        return Bullet("enemy shot 1-10.png", width=2, height=20, x_pos=self.x_pos + self.width//2, y_pos=self.y_pos, vel=4, dire=-90)
+        return Bullet("enemy shot 1-10.png", width=2, height=20, x_pos=self.x_pos + self.width//2, y_pos=self.y_pos, velocity=4, direction=-90)
 
 
 """
@@ -115,16 +117,18 @@ For the bullet class bullets will initially spawn outside the view of the player
 default direction and velocity that can be changed. NOTE: look into using data classes for this
 later... maybe?
 """
-
+@dataclasses.dataclass
 class Bullet():
-    def __init__(self, asset_name, width=2, height=20, x_pos=-100, y_pos=-100, vel=4, dire=90):
-        self.asset_name = asset_name
-        self.width = width
-        self.height = height
-        self.x_pos = x_pos
-        self.y_pos = y_pos
-        self.velocity = vel
-        self.direction = dire
+    asset_name : str
+    width : int = 2
+    height : int = 20
+    x_pos : int = -100
+    y_pos : int = -100
+    velocity : int = 4
+    direction : float = 90
+    damage : int = 1
+
+    def __post_init__(self):
         self.sprite = self.generate_bullet()
         self.collision_box = self.generate_collision_box()
 
@@ -138,10 +142,10 @@ class Bullet():
     def move_straight(self):
         if(self.direction == -90):
             self.y_pos += self.velocity
-            """
+            
         if(self.direction == 90):
             self.y_pos -= self.velocity
-    """
+    
     def move_with_angle(self):
         x=1
 

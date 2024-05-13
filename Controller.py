@@ -16,8 +16,8 @@ class Controller:
         self.view = view
         self.running = True
 
-        self.PLAYER_HIT = pygame.USEREVENT + 1
-        self.ENEMY_HIT = pygame.USEREVENT + 2
+        self.PLAYER_GOT_HIT = pygame.USEREVENT + 1
+        self.ENEMY_GOT_HIT = pygame.USEREVENT + 2
 
     def run(self):
         # generate enemies here
@@ -72,7 +72,7 @@ class Controller:
     def handle_player_and_enemy_bullet_collision(self):
         for bullet in self.model.enemy_attacks:
             if (self.model.player.colliderect(bullet)):
-                pygame.event.post(pygame.event.Event(ENEMY_HIT))
+                pygame.event.post(pygame.event.Event(self.ENEMY_GOT_HIT))
                 self.model.enemy_attacks.remove(bullet)
 
         return

@@ -5,7 +5,8 @@ from ships import Bullet
 
 class Model:
     def __init__(self):
-        self.player = Hero(100, "hero 2.png", 64, 64)
+        self.player = Hero(height=64, width=64, health=100, asset_name="hero 2.png")
+        
         self.player_attacks = []
         self.enemies = []
         self.enemy_attacks = []
