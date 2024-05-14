@@ -8,6 +8,8 @@ class Sprite:
     image: pygame.surface.Surface
     x_pos: int
     y_pos: int
+    width: int
+    height: int
 
 
 class Controller:
@@ -20,10 +22,8 @@ class Controller:
         self.ENEMY_GOT_HIT = pygame.USEREVENT + 2
 
     def run(self):
-        # generate enemies here
-
         keys_pressed = pygame.key.get_pressed()
-        
+
         self.handle_user_events()
         self.handle_user_input(keys_pressed)
         self.handle_bullets()
@@ -32,12 +32,13 @@ class Controller:
         self.send_items_to_display()
         return self.running
 
-
     def handle_user_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
 
+    # Note: x increases from left to right and y increases from top to
+    # bottom
     # 16 and 48 are the space that the ship is allowed to extend past the
     # play area.
 
@@ -60,7 +61,7 @@ class Controller:
         ):
             self.model.player.move_right()
 
-        if(keys_pressed[pygame.K_SPACE]):
+        if keys_pressed[pygame.K_SPACE]:
             self.model.player_attacks.append(self.model.player.shot())
 
     def handle_bullets(self):
@@ -69,34 +70,41 @@ class Controller:
         for bullet in self.model.enemy_attacks:
             bullet.move_straight()
 
-    def handle_player_and_enemy_bullet_collision(self):
+    def handle_player_ship_and_enemy_bullet_collision(self):
         for bullet in self.model.enemy_attacks:
-            if (self.model.player.colliderect(bullet)):
+            if self.model.player.colliderect(bullet):
                 pygame.event.post(pygame.event.Event(self.ENEMY_GOT_HIT))
                 self.model.enemy_attacks.remove(bullet)
 
         return
 
+    def handle_enemy_ship_and_player_bullet_collision(self):
+        return
+
     def enemy_activity(self, player_x_pos, player_y_pos):
         for enemy in self.model.enemies:
             bullet = enemy.behavior(player_x_pos, player_y_pos)
-            if (isinstance(bullet, Bullet)):
+            if isinstance(bullet, Bullet):
                 self.model.enemy_attacks.append(bullet)
 
     def send_items_to_display(self):
         display_paiload = []
-        for asset in (
+        for assets in (
             self.model.player_attacks,
             self.model.enemy_attacks,
             self.model.enemies,
         ):
-            for item in asset:
-                display_paiload.append(Sprite(item.sprite, item.x_pos, item.y_pos))
+            for asset in assets:
+                display_paiload.append(Sprite(asset.sprite, asset.x_pos, asset.y_pos, asset.width, asset.height))
 
-        
+
         display_paiload.append(
             Sprite(
-                self.model.player.sprite, self.model.player.x_pos, self.model.player.y_pos
+                self.model.player.sprite,
+                self.model.player.x_pos,
+                self.model.player.y_pos,
+                self.model.player.width,
+                self.model.player.height
             )
         )
 

@@ -18,20 +18,22 @@ class View:
         self.PLAY_AREA_HEIGHT = 800
 
     def title_bar_information(self):
-        SHIP_ICON = pygame.image.load(os.path.join("assets", "icon 32.png"))
-        pygame.display.set_icon(SHIP_ICON)
+        pygame.display.set_icon(pygame.image.load(os.path.join("assets", "icon 32.png")))
         pygame.display.set_caption("Shmup")
 
 
     def display_elements(self):
         self.window.fill("black")# fill the screen with a color to wipe away anything from last frame
-        self.display_player_enemies_butllets()
+        self.display_all_sprites()
         self.border_setup_and_display()
         pygame.display.flip()
         
-    def display_player_enemies_butllets(self):
+    def display_all_sprites(self):
         for item in self.display_queue:
+            #box = pygame.Rect(item.x_pos, item.y_pos, item.width, item.height)
+            #pygame.draw.rect(self.window, (0, 255, 0), box, width=2)
             self.window.blit(item.image, (item.x_pos, item.y_pos))
+
         self.display_queue.clear()
 
     def border_setup_and_display(self):
