@@ -8,11 +8,14 @@ import dataclasses
 @dataclasses.dataclass
 class BaseShip:
     asset_name : str = ""
-    ship_type : str = ""
     height : int = 64
     width : int = 64
     x_pos : int = 0
     y_pos : int = 0
+
+    # Call post init after the position and size values have been updated
+    def __post_init__(self):
+        self.sprite = self.generate_image()
     
     def generate_image(self):
         surface = pygame.Surface((self.height, self.width))
@@ -21,17 +24,17 @@ class BaseShip:
             surface = pygame.transform.scale(self.IMAGE, (self.width, self.height))
         return surface # return empty with white if there is no asset_name
 
-
 @dataclasses.dataclass
 class Hero(BaseShip):
     def __post_init__(self):
+        self.sprite_type = "hero"
         self.x_pos = 600 // 2
         self.y_pos = 400
         self.fire_rate = 300
         self.movement_speed = 2  # as far as I know this is tied to frame rate... is there a way to fix that?
         self.sprite = self.generate_image()
         self.previous_time = pygame.time.get_ticks()
-        #self.rect = pygame.rect(self.x_pos, self.y_pos, self.width, self.height)
+        super().__post_init__()
 
 
     def change_ship_size(self, new_width, new_height):
@@ -63,26 +66,18 @@ class Hero(BaseShip):
 # ========================================================================
     
 @dataclasses.dataclass
-class Enemy():
-    asset_name : str
+class Enemy(BaseShip):
     health : int = 100
-    x_pos : int = 400
-    y_pos : int = 100
-    height : int = 64
-    width : int = 64
     movement_speed : int = 1
     reaction_delay : int = 750
     shot_speed : int = 3
     shot_delay : int = 750
 
     def __post_init__(self):
+        self.sprite_type = "enemy"
         self.previous_time = pygame.time.get_ticks()
-        self.sprite = self.generate_sprite()
-
-    def generate_sprite(self):
-        self.IMAGE = pygame.image.load(os.path.join("assets", self.asset_name))
-        temp = pygame.transform.scale(self.IMAGE, (self.width, self.height))
-        return temp
+        self.sprite = self.generate_image()
+        super().__post_init__()
 
     # this behavior is just to follow the player x position while keeping its distance
     def behavior(self, player_x_pos, player_y_pos):
@@ -127,20 +122,17 @@ class Bullet():
     damage : int = 1
 
     def __post_init__(self):
+        self.sprite_type = "bullet"
         self.sprite = self.generate_bullet()
-        self.collision_box = self.generate_collision_box()
 
     def generate_bullet(self):
         self.IMAGE = pygame.image.load(os.path.join("assets", self.asset_name))
         return pygame.transform.scale(self.IMAGE, (self.width, self.height))
     
-    def generate_collision_box(self):
-        return pygame.Rect(self.x_pos + self.width//2 - 1, self.y_pos + self.height, self.width, self.height) # check width and height order
-
     def move_straight(self):
         if(self.direction == -90):
             self.y_pos += self.velocity
-            
+    
         if(self.direction == 90):
             self.y_pos -= self.velocity
     

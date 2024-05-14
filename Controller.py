@@ -5,11 +5,12 @@ from ships import Bullet
 
 @dataclass
 class Sprite:
-    image: pygame.surface.Surface
-    x_pos: int
-    y_pos: int
-    width: int
-    height: int
+    image : pygame.surface.Surface
+    sprite_type : str
+    x_pos : int
+    y_pos : int
+    width : int
+    height : int
 
 
 class Controller:
@@ -95,12 +96,13 @@ class Controller:
             self.model.enemies,
         ):
             for asset in assets:
-                display_paiload.append(Sprite(asset.sprite, asset.x_pos, asset.y_pos, asset.width, asset.height))
+                display_paiload.append(Sprite(asset.sprite, asset.sprite_type, asset.x_pos, asset.y_pos, asset.width, asset.height))
 
 
         display_paiload.append(
             Sprite(
                 self.model.player.sprite,
+                self.model.player.sprite_type,
                 self.model.player.x_pos,
                 self.model.player.y_pos,
                 self.model.player.width,

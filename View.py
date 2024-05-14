@@ -1,6 +1,7 @@
 import pygame
 import os
 from Controller import Sprite
+import pygame
 
 
 class View:
@@ -30,8 +31,17 @@ class View:
         
     def display_all_sprites(self):
         for item in self.display_queue:
-            #box = pygame.Rect(item.x_pos, item.y_pos, item.width, item.height)
-            #pygame.draw.rect(self.window, (0, 255, 0), box, width=2)
+            color = ()
+            if(item.sprite_type == "hero"):
+                color = (0, 0, 255) # blue
+            elif(item.sprite_type == "enemy"):
+                color = (255, 0, 0) # red
+            elif(item.sprite_type == "bullet"):
+                color = (160, 32, 240) # purple
+            
+            # this rect is slightly bigger than the sprite itself to see the bullets
+            temp_rect = pygame.Rect(item.x_pos -2, item.y_pos-2, item.width+4, item.height+4)
+            pygame.draw.rect(self.window, color, temp_rect, width=2)
             self.window.blit(item.image, (item.x_pos, item.y_pos))
 
         self.display_queue.clear()
