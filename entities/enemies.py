@@ -2,7 +2,7 @@
 
 import pygame
 import os
-from Attacks import Bullet
+from attacks import Bullet
     
 class Enemy:
     def __init__(

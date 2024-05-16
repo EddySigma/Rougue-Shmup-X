@@ -1,5 +1,5 @@
-from ships import Hero
-from ships import Enemy
+from entities.HeroShips import Hero
+from entities.EnemyShips import Enemy
 
 
 class Model:

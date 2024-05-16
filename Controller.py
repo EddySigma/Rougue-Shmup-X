@@ -1,6 +1,6 @@
 import pygame
 from dataclasses import dataclass
-from ships import Bullet
+from entities.attacks import Bullet
 
 class Controller:
     def __init__(self, model, view):
