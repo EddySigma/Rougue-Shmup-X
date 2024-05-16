@@ -1,8 +1,7 @@
 import pygame
 from model import Model
 from view import View
-from dataclasses import dataclass
-from entities.attacks import Bullet
+from entities.attack import Bullet
 
 class Controller:
     def __init__(self, model, view):
@@ -94,7 +93,7 @@ class Controller:
             self.model.enemies,
         ):
             for asset in assets:
-                display_paiload.append((asset.sprite, asset.sprite_type)) # send image and rect
-        display_paiload.append((self.model.player.sprite, self.model.player.sprite_type))
+                display_paiload.append((asset.sprite, asset.rect, asset.sprite_type)) # send image and rect
+        display_paiload.append((self.model.player.sprite, self.model.player.rect, self.model.player.sprite_type))
 
         self.view.add_to_display_queue(display_paiload)

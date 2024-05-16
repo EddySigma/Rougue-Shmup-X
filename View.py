@@ -30,17 +30,16 @@ class View:
     def display_all_sprites(self):
         for item in self.display_queue:
             color = ()
-            if(item[1] == "hero"):
+            if(item[2] == "hero"):
                 color = (0, 0, 255) # blue
-            elif(item[1] == "enemy"):
+            elif(item[2] == "enemy"):
                 color = (255, 0, 0) # red
-            elif(item[1] == "bullet"):
+            elif(item[2] == "bullet"):
                 color = (160, 32, 240) # purple
             
             # this rect is slightly bigger than the sprite itself to see the bullets
-            temp_rect = item[0].get_rect()
-            pygame.draw.rect(self.window, color, temp_rect, width=2)
-            self.window.blit(item[0], (temp_rect.x, temp_rect.y))
+            pygame.draw.rect(self.window, color, item[1], width=2)
+            self.window.blit(item[0], item[1])
 
         self.display_queue.clear()
 

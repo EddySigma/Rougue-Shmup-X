@@ -2,7 +2,7 @@
 
 import pygame
 import os
-import attacks
+import attack
     
 class Enemy:
     def __init__(
@@ -18,12 +18,13 @@ class Enemy:
         self.sprite_type = "enemy"
 
         self.health = 100
-        self.movement_speed = 2
-        self.reaction_delay = 750
+        self.movement_speed = 1
+        self.reaction_delay = 250
 
         self.shot_speed = 3
         self.shot_delay = 750
         self.previous_time = pygame.time.get_ticks()
+
 
     def generate_image(self, x, y, width, height):
         self.sprite = pygame.Surface((height, width))
@@ -52,19 +53,19 @@ class Enemy:
             if player_y_pos < self.rect.y:
                 self.rect.y -= self.movement_speed
 
-        time_now = pygame.time.get_ticks()
-        if time_now - self.previous_time > self.shot_delay * 1000:
+            self.previous_time = pygame.time.get_ticks()
+        if time_now - self.previous_time > self.shot_delay:
             self.previous_time = time_now
-            return self.shoot()
+            #self.shoot()
         
 
     def shoot(self):
-        return attacks.Bullet(
+        return attack.Bullet(
             move_type="down",
             asset_name="enemy shot 1-10.png",
-            width=2,
-            height=20,
             x=self.rect.centerx,
             y=self.rect.y,
+            width=2,
+            height=20,
             vel=4
         )

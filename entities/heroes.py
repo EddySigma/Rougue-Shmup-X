@@ -9,8 +9,8 @@ class Hero:
     def __init__(
         self,
         asset_name: str,
-        x: int = 100,
-        y: int = 100,
+        x: int = 400,
+        y: int = 600,
         width: int = 64,
         height: int = 64,
     ):
@@ -20,6 +20,7 @@ class Hero:
         self.fire_rate = 300
         self.movement_speed = 2  # as far as I know this is tied to frame rate... is there a way to fix that?
         self.previous_time = pygame.time.get_ticks()
+
 
     def generate_image(self, x, y, width, height):
         self.sprite = pygame.Surface((height, width))
@@ -32,10 +33,12 @@ class Hero:
             print("Invalid hero asset name!") # TODO: replace this later
         self.rect = self.sprite.get_rect(center=(x, y))
 
+
     def change_ship_size(self, new_width, new_height):
         old_x = self.rect.x
         old_y = self.rect.y
         self.sprite = self.generate_image(old_x, old_y, new_width, new_height)
+
 
     def move_right(self):
         self.rect.x += self.movement_speed
@@ -49,18 +52,7 @@ class Hero:
     def move_back(self):
         self.rect.y += self.movement_speed
 
-    """
-        self,
-        move_type : str,
-        asset_name: str,
-        x: int = -100,
-        y: int = -100,
-        width: int = 10,
-        height: int = int,
-        vel: int = 1,
-        dam: int = 1
-    """
-    
+
     def shot(self):
         shot = attacks.Bullet("up", "shot 1-10.png")
         time_now = pygame.time.get_ticks()  # there is got to be a better way...

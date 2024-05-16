@@ -1,6 +1,6 @@
 from entities.heroes import Hero
 from entities.enemies import Enemy
-
+from entities.attack import Bullet
 
 class Model:
     def __init__(self):
@@ -12,3 +12,4 @@ class Model:
         # sample enemy
         temp = Enemy(asset_name = "bomb 128.png")
         self.enemies.append(temp)
+        self.enemy_attacks.append(Bullet("down","enemy shot 1-10.png"))
