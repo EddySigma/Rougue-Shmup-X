@@ -10,4 +10,4 @@ class Model:
         self.enemies = []
         self.enemy_attacks = []
         # sample enemy
-        self.enemies.append(Enemy("bomb 128.png", movement_speed=2, shot_delay=1))
+        self.enemies.append(Enemy(asset_name = "bomb 128.png"))

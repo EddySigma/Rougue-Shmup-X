@@ -2,17 +2,6 @@ import pygame
 from dataclasses import dataclass
 from ships import Bullet
 
-
-@dataclass
-class Sprite:
-    image : pygame.surface.Surface
-    sprite_type : str
-    x_pos : int
-    y_pos : int
-    width : int
-    height : int
-
-
 class Controller:
     def __init__(self, model, view):
         self.model = model
@@ -28,7 +17,8 @@ class Controller:
         self.handle_user_events()
         self.handle_user_input(keys_pressed)
         self.handle_bullets()
-        self.enemy_activity(self.model.player.x_pos, self.model.player.y_pos)
+        self.enemy_activity(self.model.player.rect.x, self.model.player.rect.y)
+        self.handle_player_ship_and_enemy_bullet_collision()
 
         self.send_items_to_display()
         return self.running
@@ -73,13 +63,19 @@ class Controller:
 
     def handle_player_ship_and_enemy_bullet_collision(self):
         for bullet in self.model.enemy_attacks:
-            if self.model.player.colliderect(bullet):
+            """
+            if self.model.player.sprite.get_rect().colliderect(bullet):
                 pygame.event.post(pygame.event.Event(self.ENEMY_GOT_HIT))
                 self.model.enemy_attacks.remove(bullet)
-
+                print("Hit 1")"""
         return
 
     def handle_enemy_ship_and_player_bullet_collision(self):
+        for bullet in self.model.enemy_attacks:
+            if self.model.player.colliderect(bullet):
+                pygame.event.post(pygame.event.Event(self.ENEMY_GOT_HIT))
+                self.model.enemy_attacks.remove(bullet)
+                print("Hit 1")
         return
 
     def enemy_activity(self, player_x_pos, player_y_pos):
@@ -95,19 +91,10 @@ class Controller:
             self.model.enemy_attacks,
             self.model.enemies,
         ):
+            #print("asses: ", self.model.enemies)
             for asset in assets:
-                display_paiload.append(Sprite(asset.sprite, asset.sprite_type, asset.x_pos, asset.y_pos, asset.width, asset.height))
-
-
-        display_paiload.append(
-            Sprite(
-                self.model.player.sprite,
-                self.model.player.sprite_type,
-                self.model.player.x_pos,
-                self.model.player.y_pos,
-                self.model.player.width,
-                self.model.player.height
-            )
-        )
-
+                print("asses: ", asset.sprite, " ", asset.sprite_type)
+                display_paiload.append((asset.sprite, asset.sprite_type)) # send image and rect
+        display_paiload.append((self.model.player.sprite, self.model.player.sprite_type))
+        print("payload: ", display_paiload)
         self.view.add_to_display_queue(display_paiload)

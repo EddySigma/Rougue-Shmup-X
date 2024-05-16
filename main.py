@@ -9,7 +9,7 @@ def main():
     pygame.init()
 
     model = Model()
-    view = View()
+    view = View() 
     con = Controller(model, view)
 
     clock = pygame.time.Clock()
