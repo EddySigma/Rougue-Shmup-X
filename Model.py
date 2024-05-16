@@ -1,5 +1,5 @@
-from entities.HeroShips import Hero
-from entities.EnemyShips import Enemy
+from entities.heroes import Hero
+from entities.enemies import Enemy
 
 
 class Model:
@@ -10,4 +10,5 @@ class Model:
         self.enemies = []
         self.enemy_attacks = []
         # sample enemy
-        self.enemies.append(Enemy(asset_name = "bomb 128.png"))
+        temp = Enemy(asset_name = "bomb 128.png")
+        self.enemies.append(temp)

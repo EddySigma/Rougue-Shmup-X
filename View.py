@@ -1,6 +1,5 @@
 import pygame
 import os
-import pygame
 
 
 class View:
@@ -39,8 +38,9 @@ class View:
                 color = (160, 32, 240) # purple
             
             # this rect is slightly bigger than the sprite itself to see the bullets
-            pygame.draw.rect(self.window, color, item[0].get_rect(), width=2)
-            self.window.blit(item.image, (item.rect.x, item.rect.y))
+            temp_rect = item[0].get_rect()
+            pygame.draw.rect(self.window, color, temp_rect, width=2)
+            self.window.blit(item[0], (temp_rect.x, temp_rect.y))
 
         self.display_queue.clear()
 

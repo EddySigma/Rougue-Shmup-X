@@ -4,11 +4,6 @@ import pygame
 import os
 import dataclasses
 
-"""
-For the bullet class bullets will initially spawn outside the view of the player and have a
-default direction and velocity that can be changed. NOTE: look into using data classes for this
-later... maybe?
-"""
 
 @dataclasses.dataclass
 class Bullet:
@@ -28,8 +23,6 @@ class Bullet:
         self.velocity = vel
         self.damage = dam
         self.generate_bullet(x, y, height, width)
-
-    def __post_init__(self):
         self.sprite_type = "bullet"
         self.rect = self.sprite.get_rect()
 

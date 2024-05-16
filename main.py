@@ -1,9 +1,9 @@
 #!/usr/bin/venv python
 
 import pygame
-from Controller import Controller
-from View import View
-from Model import Model
+from controller import Controller
+from view import View
+from model import Model
 
 def main():
     pygame.init()

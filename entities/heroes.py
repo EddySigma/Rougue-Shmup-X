@@ -2,7 +2,7 @@
 
 import pygame
 import os
-from attacks import Bullet
+import attacks
 
 
 class Hero:
@@ -15,7 +15,7 @@ class Hero:
         height: int = 64,
     ):
         self.asset_name = asset_name
-        self.sprite = self.generate_image(x, y, width, height)
+        self.generate_image(x, y, width, height)
         self.sprite_type = "hero"
         self.fire_rate = 300
         self.movement_speed = 2  # as far as I know this is tied to frame rate... is there a way to fix that?
@@ -28,8 +28,9 @@ class Hero:
                 os.path.join("assets", self.asset_name)
             )
             self.sprite = pygame.transform.scale(self.import_sprite, (width, height))
-        else:
-            self.rect = self.sprite.get_rect(center=(x, y))
+        else: 
+            print("Invalid hero asset name!") # TODO: replace this later
+        self.rect = self.sprite.get_rect(center=(x, y))
 
     def change_ship_size(self, new_width, new_height):
         old_x = self.rect.x
@@ -61,11 +62,11 @@ class Hero:
     """
     
     def shot(self):
-        shot = Bullet("up", "shot 1-10.png")
+        shot = attacks.Bullet("up", "shot 1-10.png")
         time_now = pygame.time.get_ticks()  # there is got to be a better way...
         if time_now - self.previous_time > self.fire_rate:
             self.previous_time = time_now
-            shot = Bullet(
+            shot = attacks.Bullet(
                 move_type="up",
                 asset_name="shot 1-10.png",
                 width=3,

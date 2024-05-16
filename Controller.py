@@ -1,11 +1,13 @@
 import pygame
+from model import Model
+from view import View
 from dataclasses import dataclass
 from entities.attacks import Bullet
 
 class Controller:
     def __init__(self, model, view):
-        self.model = model
-        self.view = view
+        self.model : Model = model
+        self.view : View = view
         self.running = True
 
         self.PLAYER_GOT_HIT = pygame.USEREVENT + 1
@@ -34,21 +36,21 @@ class Controller:
     # play area.
 
     def handle_user_input(self, keys_pressed):
-        if keys_pressed[pygame.K_w] and self.model.player.y_pos >= -16:
+        if keys_pressed[pygame.K_w] and self.model.player.rect.y >= -16:
             self.model.player.move_forward()
 
         if (
             keys_pressed[pygame.K_s]
-            and self.model.player.y_pos <= self.view.PLAY_AREA_HEIGHT - 48
+            and self.model.player.rect.y <= self.view.PLAY_AREA_HEIGHT - 48
         ):
             self.model.player.move_back()
 
-        if keys_pressed[pygame.K_a] and self.model.player.x_pos >= -16:
+        if keys_pressed[pygame.K_a] and self.model.player.rect.x >= -16:
             self.model.player.move_left()
 
         if (
             keys_pressed[pygame.K_d]
-            and self.model.player.x_pos <= self.view.PLAY_AREA_WIDTH - 48
+            and self.model.player.rect.x <= self.view.PLAY_AREA_WIDTH - 48
         ):
             self.model.player.move_right()
 
@@ -91,10 +93,8 @@ class Controller:
             self.model.enemy_attacks,
             self.model.enemies,
         ):
-            #print("asses: ", self.model.enemies)
             for asset in assets:
-                print("asses: ", asset.sprite, " ", asset.sprite_type)
                 display_paiload.append((asset.sprite, asset.sprite_type)) # send image and rect
         display_paiload.append((self.model.player.sprite, self.model.player.sprite_type))
-        print("payload: ", display_paiload)
+
         self.view.add_to_display_queue(display_paiload)

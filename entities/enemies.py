@@ -2,7 +2,7 @@
 
 import pygame
 import os
-from attacks import Bullet
+import attacks
     
 class Enemy:
     def __init__(
@@ -14,7 +14,7 @@ class Enemy:
         height: int = 64
     ):
         self.asset_name = asset_name
-        self.sprite = self.generate_image(x, y, width, height)
+        self.generate_image(x, y, width, height)
         self.sprite_type = "enemy"
 
         self.health = 100
@@ -27,14 +27,12 @@ class Enemy:
 
     def generate_image(self, x, y, width, height):
         self.sprite = pygame.Surface((height, width))
-
         if self.asset_name != "":
             self.import_sprite = pygame.image.load(os.path.join("assets", self.asset_name))
             self.sprite = pygame.transform.scale(self.import_sprite, (width, height))
         else:
-            print("Invalid asset name!")
+            print("Invalid enemy asset name!") # TODO: replace this later
         self.rect = self.sprite.get_rect(center=(x, y))
-        print("Ships:generate_image ", type(self.sprite))
 
 
     # this behavior is just to follow the player x position while keeping its distance
@@ -42,16 +40,16 @@ class Enemy:
         # this is kind of frog like behavior
         time_now = pygame.time.get_ticks()
         if time_now - self.previous_time > self.reaction_delay:
-            if player_x_pos > self.x_pos:
+            if player_x_pos > self.rect.x:
                 self.rect.x += self.movement_speed
 
-            if player_x_pos < self.x_pos:
+            if player_x_pos < self.rect.x:
                 self.rect.x -= self.movement_speed
 
-            if player_y_pos > self.y_pos:
+            if player_y_pos > self.rect.y:
                 self.rect.y += self.movement_speed
 
-            if player_y_pos < self.y_pos:
+            if player_y_pos < self.rect.y:
                 self.rect.y -= self.movement_speed
 
         time_now = pygame.time.get_ticks()
@@ -61,7 +59,7 @@ class Enemy:
         
 
     def shoot(self):
-        return Bullet(
+        return attacks.Bullet(
             move_type="down",
             asset_name="enemy shot 1-10.png",
             width=2,
