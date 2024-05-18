@@ -8,8 +8,8 @@ class Bullet:
     def __init__(
         self,
         asset_name: str,
-        x: int = 10,
-        y: int = 10,
+        x: int = 100,
+        y: int = 100,
         width: int = 10,
         height: int = 10,
         vel: int = 1,
@@ -20,22 +20,14 @@ class Bullet:
         self.damage = dam
         self.generate_image(x, y, width, height)
         self.sprite_type = "bullet"
-        self.rect = self.sprite.get_rect()
 
     def generate_image(self, x, y, width, height):
-        #self.sprite = pygame.Surface((height, width))
-        if self.asset_name != "":
-            self.import_sprite = pygame.image.load(
-                os.path.join("assets", self.asset_name)
-            )
-            self.sprite = pygame.transform.scale(self.import_sprite, (width, height))
-        else: 
-            print("Invalid hero asset name!") # TODO: replace this later
+        self.import_sprite = pygame.image.load(
+            os.path.join("assets", self.asset_name)
+        )
+        self.sprite = pygame.transform.scale(self.import_sprite, (width, height))
         self.rect = self.sprite.get_rect(center=(x, y))
-
-    """
-    
-    """
+        print(self.rect)
 
     def move_up(self):
         self.rect.y -= self.velocity

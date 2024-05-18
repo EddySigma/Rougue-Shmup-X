@@ -37,8 +37,8 @@ class View:
             elif(item.category == "bullet"):
                 color = (160, 32, 240) # purple
             
-            pygame.draw.rect(self.window, color, item.rect, width=2)
             self.window.blit(item.image, item.rect)
+            pygame.draw.rect(self.window, color, item.rect, width=2)
 
         self.display_queue.clear()
 

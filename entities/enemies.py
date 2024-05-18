@@ -14,7 +14,7 @@ class Enemy:
         height: int = 64
     ):
         self.asset_name = asset_name
-        self.generate_image(x, y, width, height)
+        self.generate_image(x, y, height, width)
         self.sprite_type = "enemy"
 
         self.health = 100
@@ -26,14 +26,10 @@ class Enemy:
         self.previous_time = pygame.time.get_ticks()
 
 
-    def generate_image(self, x, y, width, height):
-        self.sprite = pygame.Surface((height, width))
-        if self.asset_name != "":
-            self.import_sprite = pygame.image.load(os.path.join("assets", self.asset_name))
-            self.sprite = pygame.transform.scale(self.import_sprite, (width, height))
-            self.sprite = pygame.transform.rotate(self.sprite, 180)
-        else:
-            print("Invalid enemy asset name!") # TODO: replace this later
+    def generate_image(self, x, y, height, width):
+        self.import_sprite = pygame.image.load(os.path.join("assets", self.asset_name))
+        self.sprite = pygame.transform.scale(self.import_sprite, (height, width))
+        self.sprite = pygame.transform.rotate(self.sprite, 180)
         self.rect = self.sprite.get_rect(center=(x, y))
 
 
@@ -67,9 +63,9 @@ class Enemy:
     def shoot(self):
         return attack.Bullet(
             asset_name="enemy shot 1-10.png",
-            x=self.rect.centerx,
-            y=self.rect.y,
             width=2,
             height=20,
+            x=self.rect.centerx,
+            y=self.rect.y,
             vel=4
         )

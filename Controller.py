@@ -21,9 +21,12 @@ class Controller:
         self.handle_user_input(keys_pressed)
         self.handle_bullets()
         self.enemy_activity(self.model.player.rect.x, self.model.player.rect.y)
-        self.handle_player_ship_and_enemy_bullet_collision()
+        #self.handle_player_ship_and_enemy_bullet_collision()
 
         self.send_items_to_display()
+
+        print("Player loc: ", self.model.player.rect)
+
         return self.running
 
     def handle_user_events(self):
@@ -56,11 +59,14 @@ class Controller:
             self.model.player.move_right()
 
         if keys_pressed[pygame.K_SPACE]:
-            self.model.player_attacks.append(self.model.player.shot())
+            shot = self.model.player.shot()
+            #print(shot.rect)
+            self.model.player_attacks.append(shot)
 
     def handle_bullets(self):
         for bullet in self.model.player_attacks:
             bullet.move_up()
+            #print("bullet -----> ", bullet.rect)
             if bullet.rect.y < -10:
                 self.model.player_attacks.remove(bullet)
 
@@ -71,12 +77,13 @@ class Controller:
 
     def handle_player_ship_and_enemy_bullet_collision(self):
         for bullet in self.model.enemy_attacks:
+            x=1
             """
             if self.model.player.sprite.get_rect().colliderect(bullet):
                 pygame.event.post(pygame.event.Event(self.ENEMY_GOT_HIT))
                 self.model.enemy_attacks.remove(bullet)
-                print("Hit 1")"""
-        return
+                print("Hit 1")
+            """
 
     def handle_enemy_ship_and_player_bullet_collision(self):
         for bullet in self.model.enemy_attacks:

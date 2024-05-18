@@ -1,6 +1,5 @@
 from entities.heroes import Hero
 from entities.enemies import Enemy
-from entities.attack import Bullet
 
 class Model:
     def __init__(self):
