@@ -7,38 +7,41 @@ import os
 class Bullet:
     def __init__(
         self,
-        move_type : str,
         asset_name: str,
-        x: int = -100,
-        y: int = -100,
+        x: int = 10,
+        y: int = 10,
         width: int = 10,
         height: int = 10,
         vel: int = 1,
         dam: int = 1,
-        direction : str = "down"
     ):
-        self.move_type = move_type
         self.asset_name = asset_name
-        self.direction = direction
         self.velocity = vel
         self.damage = dam
-        self.generate_bullet(x, y, width, height)
+        self.generate_image(x, y, width, height)
         self.sprite_type = "bullet"
         self.rect = self.sprite.get_rect()
 
-    def generate_bullet(self, x, y, width, height):
-        self.import_sprite = pygame.image.load(
-            os.path.join("assets", self.asset_name)
-        )
-        self.sprite = pygame.transform.scale(self.import_sprite, (width, height))
+    def generate_image(self, x, y, width, height):
+        #self.sprite = pygame.Surface((height, width))
+        if self.asset_name != "":
+            self.import_sprite = pygame.image.load(
+                os.path.join("assets", self.asset_name)
+            )
+            self.sprite = pygame.transform.scale(self.import_sprite, (width, height))
+        else: 
+            print("Invalid hero asset name!") # TODO: replace this later
         self.rect = self.sprite.get_rect(center=(x, y))
 
-    def move_straight(self):
-        if self.direction == "down":
-            self.rect.y += self.velocity
+    """
+    
+    """
 
-        if self.direction == "up":
-            self.rect.y -= self.velocity
+    def move_up(self):
+        self.rect.y -= self.velocity
+    
+    def move_down(self):
+        self.rect.y += self.velocity
 
     def calculate_next_pos(self):
         direction = 0 # angle (in degrees?)

@@ -2,7 +2,7 @@
 
 import pygame
 import os
-import attack
+from . import attack
     
 class Enemy:
     def __init__(
@@ -18,8 +18,8 @@ class Enemy:
         self.sprite_type = "enemy"
 
         self.health = 100
-        self.movement_speed = 1
-        self.reaction_delay = 250
+        self.movement_speed = 2
+        self.reaction_delay = 750
 
         self.shot_speed = 3
         self.shot_delay = 750
@@ -31,6 +31,7 @@ class Enemy:
         if self.asset_name != "":
             self.import_sprite = pygame.image.load(os.path.join("assets", self.asset_name))
             self.sprite = pygame.transform.scale(self.import_sprite, (width, height))
+            self.sprite = pygame.transform.rotate(self.sprite, 180)
         else:
             print("Invalid enemy asset name!") # TODO: replace this later
         self.rect = self.sprite.get_rect(center=(x, y))
@@ -40,7 +41,10 @@ class Enemy:
     def behavior(self, player_x_pos, player_y_pos):
         # this is kind of frog like behavior
         time_now = pygame.time.get_ticks()
-        if time_now - self.previous_time > self.reaction_delay:
+        if time_now - self.previous_time > 1000:
+            #self.shoot()
+            self.previous_time = time_now
+            """
             if player_x_pos > self.rect.x:
                 self.rect.x += self.movement_speed
 
@@ -52,16 +56,16 @@ class Enemy:
 
             if player_y_pos < self.rect.y:
                 self.rect.y -= self.movement_speed
-
-            self.previous_time = pygame.time.get_ticks()
-        if time_now - self.previous_time > self.shot_delay:
-            self.previous_time = time_now
+            """
+        #self.previous_time = pygame.time.get_ticks()
+        # shoot if player is underneath enemy and x time has elapsed
+        #if time_now - self.previous_time > self.shot_delay * 1000:
+            #self.previous_time = time_now
             #self.shoot()
         
 
     def shoot(self):
         return attack.Bullet(
-            move_type="down",
             asset_name="enemy shot 1-10.png",
             x=self.rect.centerx,
             y=self.rect.y,

@@ -2,7 +2,7 @@
 
 import pygame
 import os
-import attacks
+from . import attack
 
 
 class Hero:
@@ -34,12 +34,6 @@ class Hero:
         self.rect = self.sprite.get_rect(center=(x, y))
 
 
-    def change_ship_size(self, new_width, new_height):
-        old_x = self.rect.x
-        old_y = self.rect.y
-        self.sprite = self.generate_image(old_x, old_y, new_width, new_height)
-
-
     def move_right(self):
         self.rect.x += self.movement_speed
 
@@ -54,17 +48,16 @@ class Hero:
 
 
     def shot(self):
-        shot = attacks.Bullet("up", "shot 1-10.png")
+        shot = attack.Bullet(asset_name="shot 1-10.png")
         time_now = pygame.time.get_ticks()  # there is got to be a better way...
         if time_now - self.previous_time > self.fire_rate:
             self.previous_time = time_now
-            shot = attacks.Bullet(
-                move_type="up",
+            return attack.Bullet(
                 asset_name="shot 1-10.png",
                 width=3,
                 height=30,
-                x_pos=self.rect.centerx,
-                y_pos=self.rect.y,
+                x=self.rect.x,
+                y=self.rect.y,
             )
 
         return shot

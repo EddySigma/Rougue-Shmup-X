@@ -2,11 +2,13 @@ import pygame
 from model import Model
 from view import View
 from entities.attack import Bullet
+from collections import namedtuple
+
 
 class Controller:
     def __init__(self, model, view):
-        self.model : Model = model
-        self.view : View = view
+        self.model: Model = model
+        self.view: View = view
         self.running = True
 
         self.PLAYER_GOT_HIT = pygame.USEREVENT + 1
@@ -58,9 +60,14 @@ class Controller:
 
     def handle_bullets(self):
         for bullet in self.model.player_attacks:
-            bullet.move_straight()
+            bullet.move_up()
+            if bullet.rect.y < -10:
+                self.model.player_attacks.remove(bullet)
+
         for bullet in self.model.enemy_attacks:
-            bullet.move_straight()
+            bullet.move_down()
+            if bullet.rect.y > 810:
+                self.model.enemy_attacks.remove(bullet)
 
     def handle_player_ship_and_enemy_bullet_collision(self):
         for bullet in self.model.enemy_attacks:
@@ -87,13 +94,17 @@ class Controller:
 
     def send_items_to_display(self):
         display_paiload = []
-        for assets in (
-            self.model.player_attacks,
-            self.model.enemy_attacks,
-            self.model.enemies,
-        ):
-            for asset in assets:
-                display_paiload.append((asset.sprite, asset.rect, asset.sprite_type)) # send image and rect
-        display_paiload.append((self.model.player.sprite, self.model.player.rect, self.model.player.sprite_type))
+        assets = self.model.get_displayable_items()
 
+        for asset in assets:
+            display_paiload.append(self.make_display_entity(asset))
         self.view.add_to_display_queue(display_paiload)
+
+    def make_display_entity(self, sprite):
+        Display_entity = namedtuple("Display_entity", ["image", "rect", "category"])
+        entity = Display_entity(
+            image=sprite.sprite,
+            rect=sprite.rect,
+            category=sprite.sprite_type,
+        )
+        return entity
