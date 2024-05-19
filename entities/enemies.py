@@ -17,6 +17,7 @@ class Enemy:
         self.generate_image(x, y, height, width)
         self.sprite_type = "enemy"
 
+        self.is_alive = True
         self.health = 100
         self.movement_speed = 2
         self.reaction_delay = 750
@@ -69,3 +70,8 @@ class Enemy:
             y=self.rect.y,
             vel=4
         )
+    
+    def take_damage(self, value):
+        self.health -= value
+        if self.health <= 0:
+            self.is_alive = False

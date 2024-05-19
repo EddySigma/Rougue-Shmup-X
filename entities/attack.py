@@ -27,7 +27,6 @@ class Bullet:
         )
         self.sprite = pygame.transform.scale(self.import_sprite, (width, height))
         self.rect = self.sprite.get_rect(center=(x, y))
-        print(self.rect)
 
     def move_up(self):
         self.rect.y -= self.velocity

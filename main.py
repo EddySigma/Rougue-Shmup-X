@@ -10,7 +10,7 @@ def main():
 
     model = Model()
     view = View() 
-    con = Controller(model, view)
+    controller = Controller(model, view)
 
     clock = pygame.time.Clock()
     FPS = 60
@@ -18,7 +18,7 @@ def main():
     running = True
     while running:
         clock.tick(FPS)
-        running = con.run()
+        running = controller.run()
         view.display_elements()
 
         pygame.display.flip()

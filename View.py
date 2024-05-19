@@ -15,6 +15,7 @@ class View:
         self.display_queue = []
         self.PLAY_AREA_WIDTH = 600
         self.PLAY_AREA_HEIGHT = 800
+        self.viewable_boxes = True
 
     def title_bar_information(self):
         pygame.display.set_icon(pygame.image.load(os.path.join("assets", "icon 32.png")))
@@ -29,16 +30,18 @@ class View:
         
     def display_all_sprites(self):
         for item in self.display_queue:
-            color = (0,0,0)
-            if(item.category == "hero"):
-                color = (0, 0, 255) # blue
-            elif(item.category == "enemy"):
-                color = (255, 0, 0) # red
-            elif(item.category == "bullet"):
-                color = (160, 32, 240) # purple
-            
             self.window.blit(item.image, item.rect)
-            pygame.draw.rect(self.window, color, item.rect, width=2)
+            
+            if self.viewable_boxes:
+                color = (0,0,0)
+                if(item.category == "hero"):
+                    color = (0, 0, 255) # blue
+                elif(item.category == "enemy"):
+                    color = (255, 0, 0) # red
+                elif(item.category == "bullet"):
+                    color = (160, 32, 240) # purple
+                
+                pygame.draw.rect(self.window, color, item.rect, width=2)
 
         self.display_queue.clear()
 
@@ -53,3 +56,9 @@ class View:
 
     def add_to_display_queue(self, payload):
         self.display_queue.extend(payload)
+
+    def visible_boxes(self):
+        self.viewable_boxes = True
+    
+    def invisible_boxes(self):
+        self.viewable_boxes = False

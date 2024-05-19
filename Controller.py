@@ -21,11 +21,9 @@ class Controller:
         self.handle_user_input(keys_pressed)
         self.handle_bullets()
         self.enemy_activity(self.model.player.rect.x, self.model.player.rect.y)
-        #self.handle_player_ship_and_enemy_bullet_collision()
-
+        self.handle_player_ship_and_enemy_bullet_collision()
+        self.handle_enemy_ship_and_player_bullet_collision()
         self.send_items_to_display()
-
-        print("Player loc: ", self.model.player.rect)
 
         return self.running
 
@@ -59,14 +57,20 @@ class Controller:
             self.model.player.move_right()
 
         if keys_pressed[pygame.K_SPACE]:
-            shot = self.model.player.shot()
-            #print(shot.rect)
-            self.model.player_attacks.append(shot)
+            shot = self.model.player.shoot()
+            if shot is not None:
+                self.model.player_attacks.append(shot)
+
+        if keys_pressed[pygame.K_v]:
+            print("initial value: ", self.view.viewable_boxes)
+            if not self.view.viewable_boxes:
+                self.view.visible_boxes()
+            else:
+                self.view.invisible_boxes()
 
     def handle_bullets(self):
         for bullet in self.model.player_attacks:
             bullet.move_up()
-            #print("bullet -----> ", bullet.rect)
             if bullet.rect.y < -10:
                 self.model.player_attacks.remove(bullet)
 
@@ -77,20 +81,21 @@ class Controller:
 
     def handle_player_ship_and_enemy_bullet_collision(self):
         for bullet in self.model.enemy_attacks:
-            x=1
-            """
-            if self.model.player.sprite.get_rect().colliderect(bullet):
+            if self.model.player.rect.colliderect(bullet):
                 pygame.event.post(pygame.event.Event(self.ENEMY_GOT_HIT))
                 self.model.enemy_attacks.remove(bullet)
                 print("Hit 1")
-            """
+            
 
     def handle_enemy_ship_and_player_bullet_collision(self):
-        for bullet in self.model.enemy_attacks:
-            if self.model.player.colliderect(bullet):
-                pygame.event.post(pygame.event.Event(self.ENEMY_GOT_HIT))
-                self.model.enemy_attacks.remove(bullet)
-                print("Hit 1")
+        for bullet in self.model.player_attacks:
+            for enemy in self.model.enemies:
+                if enemy.rect.colliderect(bullet):
+                    enemy.take_damage(self.model.player.shot_damage)
+                    self.model.player_attacks.remove(bullet)
+
+                if enemy.health <= 0:
+                    self.model.enemies.remove(enemy)
         return
 
     def enemy_activity(self, player_x_pos, player_y_pos):
