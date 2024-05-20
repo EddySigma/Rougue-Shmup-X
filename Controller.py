@@ -32,6 +32,13 @@ class Controller:
             if event.type == pygame.QUIT:
                 self.running = False
 
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_v: # cycle through T/F
+                    if not self.view.viewable_boxes:
+                        self.view.visible_boxes()
+                    else:
+                        self.view.invisible_boxes()
+
     # Note: x increases from left to right and y increases from top to
     # bottom
     # 16 and 48 are the space that the ship is allowed to extend past the
@@ -60,14 +67,7 @@ class Controller:
             shot = self.model.player.shoot()
             if shot is not None:
                 self.model.player_attacks.append(shot)
-
-        if keys_pressed[pygame.K_v]:
-            print("initial value: ", self.view.viewable_boxes)
-            if not self.view.viewable_boxes:
-                self.view.visible_boxes()
-            else:
-                self.view.invisible_boxes()
-
+        
     def handle_bullets(self):
         for bullet in self.model.player_attacks:
             bullet.move_up()

@@ -6,10 +6,11 @@ class Model:
         self.player = Hero(asset_name="hero 2.png")
         
         self.player_attacks = []
+        self.player_muscle_flash = []
         self.enemies = []
         self.enemy_attacks = []
         # sample enemy
-        temp = Enemy(asset_name = "scout 64.png", x=300, y=100)
+        temp = Enemy(asset_name = "scout 256.png", x=300, y=100)
         self.enemies.append(temp)
 
     def get_displayable_items(self):
