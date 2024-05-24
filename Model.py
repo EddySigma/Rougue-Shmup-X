@@ -10,8 +10,8 @@ class Model:
         self.enemies = []
         self.enemy_attacks = []
         # sample enemy
-        temp = Enemy(asset_name = "scout 256.png", x=300, y=100)
-        self.enemies.append(temp)
+        self.temp = Enemy(asset_name = "scout 256.png", x=300, y=100)
+        self.enemies.append(self.temp)
 
     def get_displayable_items(self):
         entities = (

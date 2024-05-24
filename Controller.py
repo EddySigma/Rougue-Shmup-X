@@ -24,6 +24,7 @@ class Controller:
         self.handle_player_ship_and_enemy_bullet_collision()
         self.handle_enemy_ship_and_player_bullet_collision()
         self.send_items_to_display()
+        self.send_data_to_display()
 
         return self.running
 
@@ -33,7 +34,7 @@ class Controller:
                 self.running = False
 
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_v: # cycle through T/F
+                if event.key == pygame.K_v:  # cycle through T/F
                     if not self.view.viewable_boxes:
                         self.view.visible_boxes()
                     else:
@@ -67,8 +68,8 @@ class Controller:
             shot = self.model.player.shoot()
             if shot is not None:
                 self.model.player_attacks.append(shot)
-        
-    def handle_bullets(self):
+
+    def handle_bullets(self): # TODO: make function out of bounds
         for bullet in self.model.player_attacks:
             bullet.move_up()
             if bullet.rect.y < -10:
@@ -85,7 +86,6 @@ class Controller:
                 pygame.event.post(pygame.event.Event(self.ENEMY_GOT_HIT))
                 self.model.enemy_attacks.remove(bullet)
                 print("Hit 1")
-            
 
     def handle_enemy_ship_and_player_bullet_collision(self):
         for bullet in self.model.player_attacks:
@@ -94,7 +94,7 @@ class Controller:
                     enemy.take_damage(self.model.player.shot_damage)
                     self.model.player_attacks.remove(bullet)
 
-                if enemy.health <= 0:
+                if enemy.current_health <= 0:
                     self.model.enemies.remove(enemy)
         return
 
@@ -120,3 +120,9 @@ class Controller:
             category=sprite.sprite_type,
         )
         return entity
+
+    def send_data_to_display(self):
+        self.view.display_information = {
+            "current_player_hp": self.model.player.current_health,
+            "total_player_hp": self.model.player.total_health,
+        }

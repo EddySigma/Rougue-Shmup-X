@@ -39,3 +39,14 @@ class Bullet:
         vector = pygame.math.Vector2()
         vector.from_polar((self.velocity, direction))
         return (self.rect.x, self.rect.y) + vector
+
+
+"""
+import thing
+
+# area for tests until the file can be made
+# test for generate_image
+# test for move up
+# test for move down
+# etc.
+"""

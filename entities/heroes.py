@@ -15,7 +15,8 @@ class Hero:
     ):
         self.asset_name = asset_name
         self.generate_image(x, y, height, width)
-        self.health = 100
+        self.current_health = 100
+        self.total_health = 100
         self.sprite_type = "hero"
         self.shot_damage = 10
         self.movement_speed = 2  # as far as I know this is tied to frame rate... is there a way to fix that?

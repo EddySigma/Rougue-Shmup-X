@@ -18,7 +18,8 @@ class Enemy:
         self.sprite_type = "enemy"
 
         self.is_alive = True
-        self.health = 100
+        self.current_health = 100
+        self.total_health = 100
         self.movement_speed = 2
         self.reaction_delay = 750
 
@@ -38,9 +39,10 @@ class Enemy:
     def behavior(self, player_x_pos, player_y_pos):
         # this is kind of frog like behavior
         time_now = pygame.time.get_ticks()
-        if time_now - self.previous_time > 1000:
-            #self.shoot()
+        if time_now - self.previous_time > self.shot_delay:
+            print("enemy: shot!")
             self.previous_time = time_now
+            self.shoot()
             """
             if player_x_pos > self.rect.x:
                 self.rect.x += self.movement_speed
@@ -62,16 +64,37 @@ class Enemy:
         
 
     def shoot(self):
-        return attack.Bullet(
+        shot = attack.Bullet(
             asset_name="enemy shot 1-10.png",
-            width=2,
-            height=20,
             x=self.rect.centerx,
             y=self.rect.y,
-            vel=4
+            vel=4,
+            width=4,
+            height=30,
         )
     
+        return shot
+    
+        
+    
+    """
+    shot = None
+        time_now = pygame.time.get_ticks()
+        if time_now - self.time_since_last_shot > self.shot_delay:
+            self.time_since_last_shot = time_now
+            shot = attack.Bullet(
+                asset_name="shot 1-10.png",
+                x=self.rect.centerx,
+                y=self.rect.y,
+                vel=4,
+                width=3,
+                height=30,
+            )
+    
+        return shot
+    """
+    
     def take_damage(self, value):
-        self.health -= value
-        if self.health <= 0:
+        self.current_health -= value
+        if self.current_health <= 0:
             self.is_alive = False
