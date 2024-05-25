@@ -18,7 +18,7 @@ class Hero:
         self.current_health = 100
         self.total_health = 100
         self.sprite_type = "hero"
-        self.shot_damage = 10
+        self.shot_damage = 5
         self.movement_speed = 2  # as far as I know this is tied to frame rate... is there a way to fix that?
         self.time_since_last_shot = pygame.time.get_ticks()
         self.shot_delay = 300
@@ -57,22 +57,13 @@ class Hero:
                 vel=4,
                 width=3,
                 height=30,
+                dam=self.shot_damage,
             )
     
         return shot
-
-    """
-        shot = attack.Bullet(asset_name="shot 1-10.png")
-        time_now = pygame.time.get_ticks()  # there is got to be a better way...
-        if time_now - self.previous_time > self.fire_rate:
-            self.previous_time = time_now
-            shot = attack.Bullet(
-                asset_name="shot 1-10.png",
-                width=3,
-                height=30,
-                x=self.rect.x,
-                y=self.rect.y,
-            )
-
-        return shot
-    """
+    
+    def take_damage(self, value):
+        self.current_health -= value
+        if self.current_health <= 0:
+            self.current_health = 0
+            self.is_alive = False

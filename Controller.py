@@ -83,15 +83,18 @@ class Controller:
     def handle_player_ship_and_enemy_bullet_collision(self):
         for bullet in self.model.enemy_attacks:
             if self.model.player.rect.colliderect(bullet):
-                pygame.event.post(pygame.event.Event(self.ENEMY_GOT_HIT))
                 self.model.enemy_attacks.remove(bullet)
-                print("Hit 1")
+                self.model.player.take_damage(bullet.damage)
+
+            if self.model.player.current_health <= 0:
+                self.model.player.current_health = 0
+                self.running = False
 
     def handle_enemy_ship_and_player_bullet_collision(self):
         for bullet in self.model.player_attacks:
             for enemy in self.model.enemies:
                 if enemy.rect.colliderect(bullet):
-                    enemy.take_damage(self.model.player.shot_damage)
+                    enemy.take_damage(bullet.damage)
                     self.model.player_attacks.remove(bullet)
 
                 if enemy.current_health <= 0:
@@ -101,7 +104,7 @@ class Controller:
     def enemy_activity(self, player_x_pos, player_y_pos):
         for enemy in self.model.enemies:
             bullet = enemy.behavior(player_x_pos, player_y_pos)
-            if isinstance(bullet, Bullet):
+            if (bullet != None):
                 self.model.enemy_attacks.append(bullet)
 
     def send_items_to_display(self):
@@ -126,3 +129,31 @@ class Controller:
             "current_player_hp": self.model.player.current_health,
             "total_player_hp": self.model.player.total_health,
         }
+
+
+
+# ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== =====
+
+def main():
+    pygame.init()
+
+    model = Model()
+    view = View() 
+    controller = Controller(model, view)
+
+    clock = pygame.time.Clock()
+    FPS = 60
+
+    running = True
+    while running:
+        clock.tick(FPS)
+        running = controller.run()
+        view.display_elements()
+
+        pygame.display.flip()
+
+    pygame.quit()
+
+
+if __name__ == "__main__":
+    main()

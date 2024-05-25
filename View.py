@@ -15,7 +15,7 @@ class View:
         self.RED = (204, 0, 0)
         self.GREEN = (0, 230, 0)
         self.WHITE = (255, 255, 255)
-        self.LAVANDER = (230,230,255)
+        self.LAVANDER = (230, 230, 255)
         self.GREY = (54, 85, 112)
         self.LIGHT_GREY = (84, 115, 142)
 
@@ -94,7 +94,6 @@ class View:
         self.display_game_level("Stage 1: Sector 1")
         self.display_upgrades()
 
-
     def display_game_title(self):
         game_name = self.data_font.render("Rouge Shmup X", True, self.WHITE)
         self.window.blit(game_name, (610, 10))
@@ -117,7 +116,7 @@ class View:
 
     def display_game_level(self, level: str):
         level_label = self.data_font.render(level, True, self.WHITE)
-        self.window.blit(level_label, (610,150))
+        self.window.blit(level_label, (610, 150))
 
     def display_upgrades(self):
         assest = [
@@ -128,29 +127,50 @@ class View:
             "twin core 256.png",
             "unstable core 256.png",
         ]
-        x = 620
-        y = 535
+        x = 600
+        y = 515
+        gap = 5
+        upgrade_width = 150
+        upgrade_height_spacing = 95
 
         self.place_upgrade(x, y, "Thing thing", "unknown core 256.png", 0)
 
-        self.place_upgrade(x, y + 95, "Thing thing", "unknown core 256.png", 0)
-        self.place_upgrade(x + 145, y + 95, "Thing thing", "unknown core 256.png", 0)
+        self.place_upgrade(
+            x, y + upgrade_height_spacing, "Thing thing", "unknown core 256.png", 0
+        )
+        self.place_upgrade(
+            x + 145,
+            y + upgrade_height_spacing,
+            "Thing thing",
+            "unknown core 256.png",
+            0,
+        )
 
-        self.place_upgrade(x, y + (95 * 2) + 5, "Attack level", "unknown core 256.png", 900)
-        self.place_upgrade(x + 145, y + (95 * 2) + 5, "Secondary type", "unknown core 256.png", 0)
-        
-
+        self.place_upgrade(
+            x,
+            y + (upgrade_height_spacing * 2),
+            "Attack level",
+            "unknown core 256.png",
+            900,
+        )
+        self.place_upgrade(
+            x + 145,
+            y + (upgrade_height_spacing * 2),
+            "Secondary type",
+            "unknown core 256.png",
+            0,
+        )
 
     def place_upgrade(self, x: int, y: int, type: str, asset_name: str, count: int):
-        upgrade_border = pygame.Rect(x-20, y-25, 150, 90)
+        upgrade_border = pygame.Rect(x, y, 150, 90)
         pygame.draw.rect(self.window, self.LIGHT_GREY, upgrade_border, width=4)
 
         label = self.data_font.render(type, True, self.WHITE)
-        self.window.blit(label, (x - 5, y - 15))
+        self.window.blit(label, (x + 15, y + 10))
 
         upgrade_img = pygame.image.load(os.path.join("assets", asset_name))
         upgrade = pygame.transform.scale(upgrade_img, (64, 64))
-        self.window.blit(upgrade, (x, y))
+        self.window.blit(upgrade, (x + 20, y + 25))
 
         pick_up_count = self.data_font.render("x  " + str(count), True, self.WHITE)
-        self.window.blit(pick_up_count, (x + 70, y + 24))
+        self.window.blit(pick_up_count, (x + 90, y + 50))
