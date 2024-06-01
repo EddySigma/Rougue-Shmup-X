@@ -26,7 +26,10 @@ class Enemy:
         self.reaction_delay = 750
 
         self.shot_speed = 3
+        self.magazine_size = 4
+        self.shots_taken = 0
         self.shot_delay = 750
+        self.reload_delay = 2000
         self.previous_time = pygame.time.get_ticks()
 
 
@@ -41,7 +44,12 @@ class Enemy:
     def behavior(self, player_x_pos, player_y_pos):
         # this is kind of frog like behavior
         time_now = pygame.time.get_ticks()
+        reload_time = 0
         if time_now - self.previous_time > self.shot_delay:
+            self.shots_taken += 1
+            if self.shots_taken >= self.magazine_size:
+                reload_time = pygame.time.get_ticks()
+                
             self.previous_time = time_now
             return self.shoot()
             """
