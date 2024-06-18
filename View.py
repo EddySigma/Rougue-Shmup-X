@@ -23,7 +23,7 @@ class View:
         self.display_information = {}
         self.PLAY_AREA_WIDTH = 600
         self.PLAY_AREA_HEIGHT = 800
-        self.viewable_boxes = True
+        self.viewable_boxes = False
         self.title_font = pygame.font.Font(
             os.path.join("fonts", "FFFFORWA.TTF"), size=20
         )

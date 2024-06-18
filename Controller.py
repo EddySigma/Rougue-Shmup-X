@@ -1,7 +1,7 @@
 import pygame
 from model import Model
 from view import View
-from entities.attack import Bullet
+from entities import attack
 from collections import namedtuple
 
 
@@ -46,20 +46,26 @@ class Controller:
     # play area.
 
     def handle_user_input(self, keys_pressed):
-        if keys_pressed[pygame.K_w] and self.model.player.rect.y >= -16:
+        if (
+            (keys_pressed[pygame.K_w] or keys_pressed[pygame.K_UP])
+            and self.model.player.rect.y >= -16
+        ):
             self.model.player.move_forward()
 
         if (
-            keys_pressed[pygame.K_s]
+            (keys_pressed[pygame.K_s] or keys_pressed[pygame.K_DOWN])
             and self.model.player.rect.y <= self.view.PLAY_AREA_HEIGHT - 48
         ):
             self.model.player.move_back()
 
-        if keys_pressed[pygame.K_a] and self.model.player.rect.x >= -16:
+        if (
+            (keys_pressed[pygame.K_a] or keys_pressed[pygame.K_LEFT])
+            and self.model.player.rect.x >= -16
+        ):
             self.model.player.move_left()
 
         if (
-            keys_pressed[pygame.K_d]
+            (keys_pressed[pygame.K_d] or keys_pressed[pygame.K_RIGHT])
             and self.model.player.rect.x <= self.view.PLAY_AREA_WIDTH - 48
         ):
             self.model.player.move_right()
@@ -85,7 +91,14 @@ class Controller:
             if self.model.player.rect.colliderect(bullet):
                 self.model.enemy_attacks.remove(bullet)
                 self.model.player.take_damage(bullet.damage)
-
+                
+                self.model.shot_explosions.append(attack.Explosion(
+                        asset_name = "shot explosion 256.png",
+                        x=bullet.rect.centerx,
+                        y=bullet.rect.y,
+                        width=10,
+                        height=10,
+                    ))
             if self.model.player.current_health <= 0:
                 self.model.player.current_health = 0
                 self.running = False
@@ -95,6 +108,14 @@ class Controller:
             for enemy in self.model.enemies:
                 if enemy.rect.colliderect(bullet):
                     enemy.take_damage(bullet.damage)
+                    
+                    self.model.shot_explosions.append(attack.Explosion(
+                        asset_name = "shot explosion 256.png",
+                        x=bullet.rect.centerx,
+                        y=bullet.rect.y,
+                        width=10,
+                        height=10,
+                    ))
                     self.model.player_attacks.remove(bullet)
 
                 if enemy.current_health <= 0:
