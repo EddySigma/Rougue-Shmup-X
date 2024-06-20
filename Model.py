@@ -1,5 +1,6 @@
 from entities.heroes import Hero
-from entities.enemies import Enemy
+from entities.enemies import Enemy2
+import pygame
 
 class Model:
     def __init__(self):
@@ -11,7 +12,8 @@ class Model:
         self.enemy_attacks = []
         self.shot_explosions = []
         # sample enemy
-        self.temp = Enemy(asset_name = "scout 256.png", x=300, y=100)
+        #self.temp = Enemy(asset_name = "scout 256.png", x=300, y=100)
+        self.temp = Enemy2(asset_name="scout 256.png", rect = pygame.Rect(300, 100, 64, 64))
         self.enemies.append(self.temp)
 
     def get_displayable_items(self):

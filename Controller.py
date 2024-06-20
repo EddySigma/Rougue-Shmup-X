@@ -1,8 +1,9 @@
+from collections import namedtuple
 import pygame
 from model import Model
 from view import View
 from entities import attack
-from collections import namedtuple
+
 
 
 class Controller:
@@ -20,7 +21,7 @@ class Controller:
         self.handle_user_events()
         self.handle_user_input(keys_pressed)
         self.handle_bullets()
-        self.enemy_activity(self.model.player.rect.x, self.model.player.rect.y)
+        self.enemy_activity(self.model.player.rect.centerx, self.model.player.rect.centery)
         self.handle_player_ship_and_enemy_bullet_collision()
         self.handle_enemy_ship_and_player_bullet_collision()
         self.send_items_to_display()
@@ -82,7 +83,7 @@ class Controller:
                 self.model.player_attacks.remove(bullet)
 
         for bullet in self.model.enemy_attacks:
-            bullet.move_down()
+            bullet.update()
             if bullet.rect.y > 810:
                 self.model.enemy_attacks.remove(bullet)
 
