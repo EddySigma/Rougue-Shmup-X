@@ -94,6 +94,7 @@ class Weapon:
         the magazine will be refilled and after a moment and the gun will be allowed
         to fire
         """
+        print("shooting angle: ", direction)
         bullet = None
         new_time = pygame.time.get_ticks()
         if new_time - self.time_sice_last_shot >= self.shot_delay:

@@ -3,6 +3,7 @@ import pygame
 from model import Model
 from view import View
 from entities import attack
+from entities import baseActor
 
 
 
@@ -21,7 +22,7 @@ class Controller:
         self.handle_user_events()
         self.handle_user_input(keys_pressed)
         self.handle_bullets()
-        self.enemy_activity(self.model.player.rect.centerx, self.model.player.rect.centery)
+        self.enemy_activity(self.model.player)
         self.handle_player_ship_and_enemy_bullet_collision()
         self.handle_enemy_ship_and_player_bullet_collision()
         self.send_items_to_display()
@@ -78,7 +79,7 @@ class Controller:
 
     def handle_bullets(self): # TODO: make function out of bounds
         for bullet in self.model.player_attacks:
-            bullet.move_up()
+            bullet.update()
             if bullet.rect.y < -10:
                 self.model.player_attacks.remove(bullet)
 
@@ -100,8 +101,8 @@ class Controller:
                         width=10,
                         height=10,
                     ))
-            if self.model.player.current_health <= 0:
-                self.model.player.current_health = 0
+            if self.model.player.health <= 0:
+                self.model.player.health = 0
                 self.running = False
 
     def handle_enemy_ship_and_player_bullet_collision(self):
@@ -119,14 +120,14 @@ class Controller:
                     ))
                     self.model.player_attacks.remove(bullet)
 
-                if enemy.current_health <= 0:
+                if enemy.health <= 0:
                     self.model.enemies.remove(enemy)
         return
 
-    def enemy_activity(self, player_x_pos, player_y_pos):
+    def enemy_activity(self, target: baseActor.BaseActor):
         for enemy in self.model.enemies:
-            bullet = enemy.behavior(player_x_pos, player_y_pos)
-            if (bullet != None):
+            bullet = enemy.behavior(target)
+            if bullet is not None:
                 self.model.enemy_attacks.append(bullet)
 
     def send_items_to_display(self):
@@ -148,8 +149,8 @@ class Controller:
 
     def send_data_to_display(self):
         self.view.display_information = {
-            "current_player_hp": self.model.player.current_health,
-            "total_player_hp": self.model.player.total_health,
+            "current_player_hp": self.model.player.health,
+            "total_player_hp": self.model.player._total_health,
         }
 
 

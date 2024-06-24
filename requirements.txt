@@ -1,7 +1,14 @@
-exceptiongroup==1.2.1
-iniconfig==2.0.0
-packaging==24.0
-pluggy==1.5.0
-pygame==2.5.2
-pytest==8.2.0
+black @ git+https://github.com/psf/black@882d8795c6ff65c02f2657e596391748d1b6b7f5
+click==8.1.7
+mypy-extensions==1.0.0
+numpy==1.26.1
+packaging==23.2
+pandas==2.1.2
+pathspec==0.11.2
+platformdirs==3.11.0
+python-dateutil==2.8.2
+pytz==2023.3.post1
+six==1.16.0
 tomli==2.0.1
+typing_extensions==4.8.0
+tzdata==2023.3

@@ -1,11 +1,17 @@
-from entities.heroes import Hero
-from entities.enemies import Enemy2
+import os
 import pygame
+from entities.heroes import Hero2
+from entities.enemies import Enemy2
+from entities.attack import Weapon
 
 class Model:
     def __init__(self):
-        self.player = Hero(asset_name="hero 2.png")
-        
+        #self.player = Hero(asset_name="hero 2.png")
+        img = pygame.image.load(os.path.join("assets", "hero 1.png"))
+        rect = pygame.Rect(450,600, 64, 64)
+        weapon = Weapon(bullet_asset_name="h-shot20.png")
+        self.player = Hero2(img, rect, weapon)
+
         self.player_attacks = []
         self.player_muscle_flash = []
         self.enemies = []
@@ -13,7 +19,10 @@ class Model:
         self.shot_explosions = []
         # sample enemy
         #self.temp = Enemy(asset_name = "scout 256.png", x=300, y=100)
-        self.temp = Enemy2(asset_name="scout 256.png", rect = pygame.Rect(300, 100, 64, 64))
+        enemy_img = pygame.image.load(os.path.join("assets", "scout 256.png"))
+        enemy_rect = pygame.Rect(300, 400, 64, 64)
+        enemy_weapon = Weapon(bullet_asset_name="shot 20.png")
+        self.temp = Enemy2(enemy_img, enemy_rect, enemy_weapon)
         self.enemies.append(self.temp)
 
     def get_displayable_items(self):
