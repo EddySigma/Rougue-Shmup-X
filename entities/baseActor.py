@@ -44,8 +44,8 @@ class BaseActor:
     def find_squared_distance_to(self, another: "BaseActor"):
         """ Distance function that remains squared to make it faster """
         return (
-            (self.rect.centerx - another.rect.centerx)^ 2 +
-            (self.rect.centery - another.rect.centery)^ 2
+            (self.rect.centerx - another.rect.centerx) ** 2 +
+            (self.rect.centery - another.rect.centery) ** 2
         )
 
     def find_distance_to(self, another: "BaseActor"):

@@ -66,7 +66,7 @@ class Weapon:
     """
 
     def __init__(
-        self, bullet_asset_name: str, magazine: int = 3, speed: int = 2, damage: int = 1
+        self, bullet_asset_name: str, magazine: int = 3, speed: int = 4, damage: int = 1
     ):
         import_bullet_image = pygame.image.load(os.path.join("assets", bullet_asset_name))
         self.bullet_sprite = pygame.transform.scale(import_bullet_image, (10, 10))
@@ -75,8 +75,8 @@ class Weapon:
         self.magazine = magazine
         self.shot_speed = speed
         self.shot_damage = damage
-        self.reload_delay = 1000
-        self.shot_delay = 250
+        self.reload_delay = 120
+        self.shot_delay = 60
         self.time_sice_last_shot = pygame.time.get_ticks()
 
     def make_bullet(self, x, y, direction):
